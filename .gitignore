@@ -1,0 +1,7 @@
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/settings.json
+.vscode/STM32H750x.svd
+.vscode/tasks.json
+build/
+euro-tomboi-kicad/euro-tomboi-backups/
