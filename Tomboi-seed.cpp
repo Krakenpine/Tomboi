@@ -32,10 +32,6 @@ using namespace daisysp;
 
 DaisySeed  hardware;
 ReverbSc   verb;
-Parameter  p_speed1;
-Parameter  p_speed2;
-
-int blink_counter = 0;
 
 float DSY_SDRAM_BSS buf_pitch[48000 * 4] = { 0 };
 
@@ -50,15 +46,11 @@ DelayLP delay_cho;
 
 ChorusLP chorus1;
 
-std::vector <PolyVoice> polys;
-
 std::vector <TomVoice> tom_voices1;
 std::vector <TomVoice> tom_voices2;
 std::vector <TomVoice> tom_voices3;
 
 float base_note = 16.35;
-
-int samples_length = 9;
 
 float drywet = 0.50;
 
@@ -71,15 +63,6 @@ int dry_feedback_lowpass = 0;
 int selected_sample = 0;
 
 bool pitch_type = false;
-
-int midi_note = 0;
-bool midi_note_on = false;
-
-int midi_note_count = 0;
-
-bool midi_note_edge = false;
-
-float oct_up_mix = 0.0;
 
 int selected_tom1 = 0;
 int selected_tom2 = 1;
@@ -156,7 +139,6 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
     if (trigger2_pushed)
     {
         selected_tom2 = static_cast<int>((hardware.adc.GetFloat(3)) * 7.0f);
-        float speed2 = 1.0f - hardware.adc.GetFloat(2);
         if (speed2 >= 0.5)
         {
             tom_speed2 = speed2 * 8.0f;
@@ -205,7 +187,6 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
 
     for(size_t i = 0; i < size; i += 2)
     {
-        blink_counter++;
         // Process
 
         float temp = 0;
@@ -216,6 +197,8 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
 
         temp *= 0.5;
 
+        // Chorus and delay are not used in current sounds
+        // There could be separate chorus and delay for different voices
         //temp = chorus1.process(temp);
 
         //temp += delay1.process(temp);
@@ -325,7 +308,7 @@ void InitSynth(float samplerate)
 void initKnobs()
 {
 
-    AdcChannelConfig adc[9]; //array size for number of ADC channels you need
+    AdcChannelConfig adc[9];
 
     adc[0].InitSingle(hardware.GetPin(15));     // ADC0 pitch 1
     adc[1].InitSingle(hardware.GetPin(16));     // ADC1 select 1
@@ -364,7 +347,8 @@ int main(void)
     initKnobs();
     hardware.StartAudio(audio);
 
-    while(1) {
+    while(1)
+    {
 
     }
 }
