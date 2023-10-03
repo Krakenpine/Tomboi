@@ -96,12 +96,12 @@ float fastTanh(float in)
     }
 }
 
-float inputPitchToMidiNote(float pitch)
+int inputPitchToMidiNote(float pitch)
 {
     // Voltage from 0 to 10 volts => 10 octaves + 1 semitone C-1 -> C9, 121 midi notes
     float lowest_midi_note = 0.0f; // C-1, midi note 0, 8.18 Hz
     float midi_note_range = 121.0f;
-    return lowest_midi_note + pitch / midi_note_range;
+    return static_cast<int>(lowest_midi_note + pitch * midi_note_range);
 }
 
 static void  audio(AudioHandle::InterleavingInputBuffer  in,
