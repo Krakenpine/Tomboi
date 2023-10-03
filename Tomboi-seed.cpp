@@ -126,7 +126,7 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
         selected_tom1 = static_cast<int>((hardware.adc.GetFloat(1)) * 7.0f);
         if (speed1 >= 0.5)
         {
-            tom_speed1 = speed1 * 8.0f;
+            tom_speed1 = 1.0f + (speed1 - 0.5f) * 6.0f;
         }
         else
         {
@@ -141,7 +141,7 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
         selected_tom2 = static_cast<int>((hardware.adc.GetFloat(3)) * 7.0f);
         if (speed2 >= 0.5)
         {
-            tom_speed2 = speed2 * 8.0f;
+            tom_speed2 = 1.0f + (speed2 - 0.5f) * 6.0f;
         }
         else
         {
@@ -156,7 +156,7 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
         selected_tom3 = int((hardware.adc.GetFloat(5)) * 7.0f);
         if (speed3 >= 0.5)
         {
-            tom_speed3 = speed3 * 8.0f;
+            tom_speed3 = 1.0f + (speed3 - 0.5f) * 6.0f;
         }
         else
         {
