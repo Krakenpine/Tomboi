@@ -96,6 +96,18 @@ float fastTanh(float in)
     }
 }
 
+float cvToPitch(float cv_in)
+{
+    if (cv_in >= 0.5)
+    {
+        return 1.0f + (cv_in - 0.5f) * 3.0f;
+    }
+    else
+    {
+        return 1.0f / ((1.0f - cv_in * 2.0f) * 3.0f + 1.0f);
+    }
+}
+
 int inputPitchToMidiNote(float pitch)
 {
     // Voltage from 0 to 10 volts => 10 octaves + 1 semitone C-1 -> C9, 121 midi notes
@@ -124,14 +136,7 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
     if (trigger1_pushed)
     {
         selected_tom1 = static_cast<int>((hardware.adc.GetFloat(1)) * 7.0f);
-        if (speed1 >= 0.5)
-        {
-            tom_speed1 = speed1 * 8.0f;
-        }
-        else
-        {
-            tom_speed1 = 1.0f / ((1.0f - speed1 * 2.0f) * 3.0f + 1.0f);
-        }
+        tom_speed1 = cvToPitch(speed1);
         tom_voices1.at(selected_tom1).setSpeed(tom_speed1);
         tom_voices1.at(selected_tom1).start();
     }
@@ -139,14 +144,7 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
     if (trigger2_pushed)
     {
         selected_tom2 = static_cast<int>((hardware.adc.GetFloat(3)) * 7.0f);
-        if (speed2 >= 0.5)
-        {
-            tom_speed2 = speed2 * 8.0f;
-        }
-        else
-        {
-            tom_speed2 = 1.0f / ((1.0f - speed2 * 2.0f) * 3.0f + 1.0f);
-        }
+        tom_speed2 = cvToPitch(speed2);
         tom_voices2.at(selected_tom2).setSpeed(tom_speed2);
         tom_voices2.at(selected_tom2).start();
     }
@@ -154,14 +152,7 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
     if (trigger3_pushed)
     {
         selected_tom3 = int((hardware.adc.GetFloat(5)) * 7.0f);
-        if (speed3 >= 0.5)
-        {
-            tom_speed3 = speed3 * 8.0f;
-        }
-        else
-        {
-            tom_speed3 = 1.0f / ((1.0f - speed3 * 2.0f) * 3.0f + 1.0f);
-        }
+        tom_speed3 = cvToPitch(speed3);
         tom_voices3.at(selected_tom3).setSpeed(tom_speed3);
         tom_voices3.at(selected_tom3).start();
     }
@@ -169,6 +160,9 @@ static void  audio(AudioHandle::InterleavingInputBuffer  in,
     cv_type.Debounce();
     if (cv_type.Pressed())
     {
+        tom_speed1 = cvToPitch(speed1);
+        tom_speed2 = cvToPitch(speed2);
+        tom_speed3 = cvToPitch(speed3);
         tom_voices1.at(selected_tom1).setSpeed(tom_speed1);
         tom_voices2.at(selected_tom2).setSpeed(tom_speed2);
         tom_voices3.at(selected_tom3).setSpeed(tom_speed3);
