@@ -1,4 +1,4 @@
-const static int tom1[] = {    18,
+constexpr static int tom1[] = {    18,
     166,
     89,
     166,
@@ -22906,4 +22906,4 @@ float tom1_tune = 220;
 
 int tom1_loop = 0;
 
-#define tom1_size 22903
+constexpr static int tom1_size = 22903;

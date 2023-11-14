@@ -1,4 +1,4 @@
-const static int tom5[] = {    11,
+constexpr static int tom5[] = {    11,
     22,
     23,
     28,
@@ -88203,4 +88203,4 @@ float tom5_tune = 220;
 
 int tom5_loop = 0;
 
-#define tom5_size 88200
+constexpr static int tom5_size = 88200;
